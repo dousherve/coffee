@@ -12,7 +12,7 @@ function scheduleCronJobs(job) {
         console.log("ON");
     }, { scheduled: job.enabled });
 
-    let offTask = cron.schedule(`${job.m + 4} ${job.h} * * *`, () => {
+    let offTask = cron.schedule(`${job.m + job.delay} ${job.h} * * *`, () => {
         exec(OFF_COMMAND);
         console.log("OFF");
     }, { scheduled: job.enabled });

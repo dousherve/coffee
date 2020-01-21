@@ -33,6 +33,7 @@ app.post('/coffee/jobs', (req, res) => {
     const h = req.body.h;
     const m = req.body.m;
     const enabled = req.body.enabled;
+    const delay = req.body.delay;
 
     if (!h || h < 0 || h > 23) {
         return res.status(400).send({
@@ -50,6 +51,7 @@ app.post('/coffee/jobs', (req, res) => {
     const job = {
         id: Math.floor(Math.random() * 99999) + 100000,
         enabled: enabled ? JSON.parse(enabled) : true,
+        delay: delay ? parseInt(delay) : 4,
         h: parseInt(h),
         m: parseInt(m)
     }
@@ -114,6 +116,7 @@ app.put('/coffee/jobs/:id', (req, res) => {
     const h = req.body.h;
     const m = req.body.m;
     const enabled = req.body.enabled;
+    const delay = req.body.delay;
 
     if (!h || h < 0 || h > 23) {
         return res.status(400).send({
@@ -129,7 +132,8 @@ app.put('/coffee/jobs/:id', (req, res) => {
 
     const updatedJob = {
         id: jobFound.id,
-        enabled: enabled ? JSON.parse(enabled) : true,
+        enabled: enabled ? JSON.parse(enabled) : jobFound.enabled,
+        delay: parseInt(delay) || jobFound.delay,
         h: parseInt(h) || jobFound.h,
         m: parseInt(m) || jobFound.m
     }
@@ -160,5 +164,5 @@ app.listen(PORT, () => {
         }
     });
 
-    console.log("Scheduled " + getJobs().length + " tasks (" + enabledCount + " enabled)");
+    console.log("Scheduled " + getJobs().length + " task(s) (" + enabledCount + " enabled)");
 });
