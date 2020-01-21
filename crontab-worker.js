@@ -12,6 +12,9 @@ function scheduleCronJobs(job) {
         console.log("ON");
     }, { scheduled: job.enabled });
 
+    // TODO: Compute the correct time, because adding the delay
+    //       may result in an amount of minutes greater than 59
+
     let offTask = cron.schedule(`${job.m + job.delay} ${job.h} * * *`, () => {
         exec(OFF_COMMAND);
         console.log("OFF");
