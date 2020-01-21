@@ -160,5 +160,5 @@ app.listen(PORT, () => {
         }
     });
 
-    console.log("Scheduled " + getJobs.length + " tasks (" + enabledCount + " enabled)");
+    console.log("Scheduled " + getJobs().length + " tasks (" + enabledCount + " enabled)");
 });
