@@ -9,15 +9,14 @@ let tasks = [];
 function scheduleCronJobs(job) {
     let onTask = cron.schedule(`${job.m} ${job.h} * * *`, () => {
         exec(ON_COMMAND);
-        console.log("ON");
     }, { scheduled: job.enabled });
 
-    // TODO: Compute the correct time, because adding the delay
-    //       may result in an amount of minutes greater than 59
+    let offM = job.m + job.delay;
+    let offH = job.h + (offM - (offM % 60)) / 60;
+    offM %= 60;
 
-    let offTask = cron.schedule(`${job.m + job.delay} ${job.h} * * *`, () => {
+    let offTask = cron.schedule(`${offM} ${offH} * * *`, () => {
         exec(OFF_COMMAND);
-        console.log("OFF");
     }, { scheduled: job.enabled });
 
     tasks.push({
@@ -38,7 +37,8 @@ function removeCronJobs(job) {
 }
 
 function enableJob(job) {
-    tasks.filter(task => task.job.id === job.id)
+    tasks
+        .filter(task => task.job.id === job.id)
         .forEach(task => {
             task.onTask.start();
             task.offTask.start();
@@ -46,7 +46,8 @@ function enableJob(job) {
 }
 
 function disableJob(job) {
-    tasks.filter(task => task.job.id === job.id)
+    tasks
+        .filter(task => task.job.id === job.id)
         .forEach(task => {
             task.onTask.stop();
             task.offTask.stop();
