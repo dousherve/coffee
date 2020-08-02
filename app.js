@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // GET request
 // Retrieve all the jobs
 
-app.get('/coffee/jobs', (req, res) => {
+app.get('/coffee/jobs', (_req, res) => {
     res.status(200).send({
         success: true,
         message: 'Successfully retrieved jobs',
