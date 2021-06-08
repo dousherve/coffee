@@ -1,5 +1,5 @@
-const cron = require('node-cron');
-const exec = require('child_process').exec;
+import { schedule } from 'node-cron';
+import { exec } from 'child_process';
 
 const ON_COMMAND = "bash /home/pi/scripts/on_coffee";
 const OFF_COMMAND = "bash /home/pi/scripts/off_coffee";
@@ -7,7 +7,7 @@ const OFF_COMMAND = "bash /home/pi/scripts/off_coffee";
 let tasks = [];
 
 function scheduleCronJobs(job) {
-    let onTask = cron.schedule(`${job.m} ${job.h} * * *`, () => {
+    let onTask = schedule(`${job.m} ${job.h} * * *`, () => {
         exec(ON_COMMAND);
     }, { scheduled: job.enabled });
 
@@ -15,7 +15,7 @@ function scheduleCronJobs(job) {
     let offH = job.h + (offM - (offM % 60)) / 60;
     offM %= 60;
 
-    let offTask = cron.schedule(`${offM} ${offH} * * *`, () => {
+    let offTask = schedule(`${offM} ${offH} * * *`, () => {
         exec(OFF_COMMAND);
     }, { scheduled: job.enabled });
 
@@ -42,7 +42,7 @@ function enableJob(job) {
         .forEach(task => {
             task.onTask.start();
             task.offTask.start();
-    });
+        });
 }
 
 function disableJob(job) {
@@ -51,10 +51,10 @@ function disableJob(job) {
         .forEach(task => {
             task.onTask.stop();
             task.offTask.stop();
-    });
+        });
 }
 
-module.exports = {
+export default {
     scheduleCronJobs,
     removeCronJobs
 }
