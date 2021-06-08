@@ -1,8 +1,16 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import { getJobs, addJob, removeJob, updateJob } from './db/db';
-import { scheduleCronJobs, removeCronJobs } from './crontab-worker';
+import {
+    getJobs,
+    addJob,
+    removeJob,
+    updateJob
+} from './db/db';
+import {
+    scheduleCronJobs,
+    removeCronJobs
+} from './crontab-worker';
 
 const app = express();
 
@@ -11,7 +19,9 @@ const app = express();
 // req.body, and the JSON will be parsed as JS objects
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 
 // GET request
 // Retrieve all the jobs
@@ -155,7 +165,7 @@ app.put('/coffee/jobs/:id', (req, res) => {
 const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    
+
     let enabledCount = 0;
     getJobs().forEach(job => {
         scheduleCronJobs(job);

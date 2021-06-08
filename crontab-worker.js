@@ -1,5 +1,9 @@
-import { schedule } from 'node-cron';
-import { exec } from 'child_process';
+import {
+    schedule
+} from 'node-cron';
+import {
+    exec
+} from 'child_process';
 
 const ON_COMMAND = "bash /home/pi/scripts/on_coffee";
 const OFF_COMMAND = "bash /home/pi/scripts/off_coffee";
@@ -9,7 +13,9 @@ let tasks = [];
 function scheduleCronJobs(job) {
     let onTask = schedule(`${job.m} ${job.h} * * *`, () => {
         exec(ON_COMMAND);
-    }, { scheduled: job.enabled });
+    }, {
+        scheduled: job.enabled
+    });
 
     let offM = job.m + job.delay;
     let offH = job.h + (offM - (offM % 60)) / 60;
@@ -17,7 +23,9 @@ function scheduleCronJobs(job) {
 
     let offTask = schedule(`${offM} ${offH} * * *`, () => {
         exec(OFF_COMMAND);
-    }, { scheduled: job.enabled });
+    }, {
+        scheduled: job.enabled
+    });
 
     tasks.push({
         job: job,

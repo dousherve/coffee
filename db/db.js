@@ -18,7 +18,7 @@ function removeJob(index) {
     saveJobs(jobs);
 }
 
-function updateJob(index, updatedJob) {
+function updateJob(index, updatedJob) {
     let jobs = getJobs();
     jobs.splice(index, 1, updatedJob);
     saveJobs(jobs);
